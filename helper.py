@@ -28,18 +28,17 @@ def ts(milliseconds):
     days, hours = divmod(hours, 24)
     weeks, days = divmod(days, 7)
     tmp = (
-        ((str(weeks) + "w:") if weeks else "")
-        + ((str(days) + "d:") if days else "")
-        + ((str(hours) + "h:") if hours else "")
-        + ((str(minutes) + "m:") if minutes else "")
-        + ((str(seconds) + "s") if seconds else "")
+        (f"{str(weeks)}w:" if weeks else "")
+        + (f"{str(days)}d:" if days else "")
+        + (f"{str(hours)}h:" if hours else "")
+        + (f"{str(minutes)}m:" if minutes else "")
+        + (f"{str(seconds)}s" if seconds else "")
     )
+
     if not tmp:
         return "0s"
 
-    if tmp.endswith(":"):
-        return tmp[:-1]
-    return tmp
+    return tmp[:-1] if tmp.endswith(":") else tmp
 
 
 def is_reddit_link(link):
@@ -84,6 +83,6 @@ async def get_media(submission, log):
 
 
 async def get_thumb(file):
-    thumb_name = secrets.token_hex(nbytes=8) + ".jpg"
+    thumb_name = f"{secrets.token_hex(nbytes=8)}.jpg"
     await bash(f'ffmpeg -i """{file}""" -ss 1 -vframes 1 """{thumb_name}"""')
     return thumb_name

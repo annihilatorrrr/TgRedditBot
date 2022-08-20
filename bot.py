@@ -185,8 +185,7 @@ async def restart(event):
 
 async def on_start():
     try:
-        xx = eval(dB.get("RESTART") or "[]")
-        if xx:
+        if xx := eval(dB.get("RESTART") or "[]"):
             x = await bot.get_messages(xx[0], ids=xx[1])
             await x.edit("`Restarted`")
             dB.delete("RESTART")
@@ -398,9 +397,7 @@ async def front_feed(event):
         return await event.reply(AD)
     xx = await event.reply(PRO)
     try:
-        no = event.pattern_match.group(1)
-        if not no:
-            no = 5
+        no = event.pattern_match.group(1) or 5
         number = int(no)
     except BaseException:
         return await xx.edit("`Wrong Input, Ex-` `/feed 10`")
@@ -618,7 +615,7 @@ async def subinfo(event):
     try:
         subreddit = await reddit.subreddit(username, fetch=True)
         if len(subreddit.description) > 100:
-            desc = subreddit.description[:72] + "..."
+            desc = f"{subreddit.description[:72]}..."
         else:
             desc = subreddit.description
         msg = SUB_INFO.format(
